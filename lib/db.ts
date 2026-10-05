@@ -11,7 +11,7 @@ declare global {
 function getDb(): Database.Database {
   if (!globalThis.__squirrelDb) {
     const db = new Database(DB_PATH);
-    db.pragma("journal_mode = WAL");
+    db.pragma("journal_mode = DELETE");
     db.exec(`
       CREATE TABLE IF NOT EXISTS harnesses (
         name TEXT NOT NULL UNIQUE,
