@@ -1,21 +1,24 @@
-
 # Welcome to the Red Squirrel Harnness Framework !
+
 <i>This framework is a DevX quality harness observer for claude code</i>
+
 ## Getting Started
 
 🐿️ - Install the app
+
 ```bash
+nvm use 22
 npm i -g red-squirrel
 ```
 
 🐿️🐿️ - Start then red squirrel
-
 
 ```bash
 squirrel --watch
 ```
 
 Then the app should run on your browser at [http://localhost:4000]
+
 ```
 Waking up the red squirrel...
         /\/\             _______
@@ -33,9 +36,37 @@ Waking up the red squirrel...
 ```
 
 ### Troubleshooting
+
 Pack, install and run without npmjs.org
+
 ```
 npm pack
-npm i -g red-squirrel-0.1.1.tgz
+npm i -g red-squirrel-0.2.0.tgz
 squirrel
+```
+
+### API
+
+#### Harnesses API
+
+##### create
+
+```
+curl -X POST http://localhost:4115/api/harnesses \
+  -H 'content-type: application/json' \
+  -d '{"name":"toto","description":"tata"}'
+```
+
+##### update
+
+```
+curl -X PUT http://localhost:4115/api/harnesses/toto \
+  -H 'content-type: application/json' \
+  -d '{"description":"new desc"}'
+```
+
+##### delete
+
+```
+curl -X DELETE http://localhost:4115/api/harnesses/toto
 ```

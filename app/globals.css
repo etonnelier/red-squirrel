@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-lavender: #8979c2;
+  --color-ink: #0e0e12;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: var(--color-lavender);
+  --color-foreground: var(--color-ink);
+  --color-ink: #0e0e12;
+  --color-surface: #ffffff;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+
+/* View transitions */
+
+/* Brand morph duration — tweak this to change the transition speed */
+:root {
+  --brand-transition-duration: 1000ms;
+}
+
+/* Let clicks pass through the transition overlay */
+::view-transition {
+  pointer-events: none;
+}
+
+/* Shared brand morph: bounding box interpolation (position + scale) */
+::view-transition-group(brand) {
+  animation-duration: var(--brand-transition-duration);
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fade-out for elements leaving during navigation */
+::view-transition-old(.fade-out) {
+  animation: 250ms ease-out both fade-out;
+}
+
+::view-transition-new(.fade-out) {
+  animation: none;
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
 }

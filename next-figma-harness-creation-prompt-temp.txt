@@ -1,0 +1,62 @@
+
+## Original request (verbatim intent)
+Create a new  page at http://localhost:4115/harness?name=toto
+
+
+The second visual element is :
+Indented rows of CLAUDE.md / settings file paths to render, with invented line counts 
+shown to the right. The fourth row is a sub-project and must appear multiple times
+with special indent to indicate they all belong to the same project.
+
+Two invented sub-directories for the sub-project row: "folder A" and "folder B".
+
+Totals required in every case: root case, folder A case, folder B case.
+
+Scoring rule (pass rate as a function of total line count):
+(TODO : re-design the score rule to better comply with claude code dilution)
+  - below 200 lines           -> 100%
+  - 200–300 lines             -> linear from 100% down to 90%
+  - 300–400 lines             -> linear from 90% down to 0%
+  - above 400 lines           -> 0%
+
+Each row shows: number of lines + score in %.
+
+Style guidance:
+  - Mix the style from the landing page and the dashboard page of this file.
+  - Use LIGHT mode (not dark).
+  - Reuse the "team member graph" from the dashboard page at the very top of the
+    "Harness details" page.
+
+## The four rows (source text from user)
+1. /Library/Application Support/ClaudeCode/managed-settings.json
+2. ~/.claude/CLAUDE.md
+3. <project>/CLAUDE.md
+4. <project>/<subdir>/CLAUDE.md
+
+Also, rules in .claude/rules and in the personal settings
+
+- /Library/Application Support/ClaudeCode/managed-settings.json > 90 lines
+  - ~/.claude/CLAUDE.md > 50 lines
+  - ~/.claude/rules/rule1.md : <regex as in frontmatter to invent> : invented lines and score
+    - <project>/CLAUDE.md > 120 lines
+      - <project>/.claude/rules/rule2.md : <regex as in frontmatter to invent> : invented lines and score
+      --- (delimitor)
+      - <project>/<subdir>/CLAUDE.md > 50 lines : total 260 lines : 94% score
+      - <project>/<subdir>/CLAUDE.md > 90 lines : total 300 lines : 90% score
+
+
+## Resumption checklist (when Figma MCP is available again)
+1. Re-read figma-use skill (skill://figma/figma-use/SKILL.md).
+2. Inspect file 88xnmBqkqsOK12EKxVJaNL:
+     - pages list (existing landing page + dashboard page IDs/names)
+     - landing page: extract colors, typography, layout tokens, paddings, radii
+     - dashboard page: extract the team member graph (find it by name/type)
+     - variables / styles / components in use
+3. Create a third page named "Harness details" whose title is 'Anti-dilution metrics'.
+4. Build top -> bottom:
+     a) git branch graph (cloned/adapted from dashboard, reused at the very top)
+     b) Scoring function graph (lines vs pass rate, light mode)
+     c) Indented list of claude guidance + rules with invented line counts and scores
+5. Take a composition screenshot, then a final screenshot if any visual fix is
+   applied.
+6. Plan calls in safe-retry batches; return all created/mutated node IDs.
