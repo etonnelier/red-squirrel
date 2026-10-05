@@ -3,12 +3,12 @@
 <i>This framework is a DevX quality harness observer for claude code</i>
 ## Getting Started
 
-First, install the app:
+🐿️ - Install the app
 ```bash
-npm i red-squirrel
+npm i -g red-squirrel
 ```
 
-Second, start then red squirrel 🐿️ :
+🐿️🐿️ - Start then red squirrel
 
 
 ```bash
