@@ -1,25 +1,24 @@
 {
-  "name": "red-squirrel-harness-framework",
-  "version": "0.1.0",
-  "private": true,
+  "name": "red-squirrel",
+  "version": "0.1.1",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "bash startup.sh"
+  },
+  "bin": {
+    "squirrel": "./squirrel"
   },
   "dependencies": {
     "next": "16.3.6",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
+    "react-dom": "19.2.8",
     "@types/node": "^20",
     "@types/react": "^19",
+    "@tailwindcss/postcss": "^4"
+  },
+  "devDependencies": {
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.6",
+    "eslint-config-next": "^16.3.8",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
