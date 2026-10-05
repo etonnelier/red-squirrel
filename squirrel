@@ -13,6 +13,5 @@ echo "  /    \__/    \            /"
 echo "  \____________/___________/"
 echo "    /__/  \__\\"
 
-cd ../lib/node_modules/red-squirrel
+cd "$(which squirrel | sed 's|/bin/squirrel$||')/lib/node_modules/red-squirrel"
 npm run dev
-open http://localhost:4000

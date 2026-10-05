@@ -31,3 +31,11 @@ Waking up the red squirrel...
     /__/  \__\
 
 ```
+
+### Troubleshooting
+Pack, install and run without npmjs.org
+```
+npm pack
+npm i -g red-squirrel-0.1.1.tgz
+squirrel
+```
