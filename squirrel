@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+echo "Waking up the red squirrel..."
+echo "        /\/\             _______"
+echo "       /    \           /       \\"
+echo "      / o  o \         /   ___   \\"
+echo "     /   <>   \        |  /   \  |"
+echo "    /  __/\__  \       |  \___/  |"
+echo "   /  /      \  \      \        /"
+echo "  (__|        |__)      \      /"
+echo "   /  \    /  \_________/     /"
+echo "  /    \__/    \            /"
+echo "  \____________/___________/"
+echo "    /__/  \__\\"
