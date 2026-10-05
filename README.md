@@ -54,7 +54,7 @@ squirrel
 ```
 curl -X POST http://localhost:4115/api/harnesses \
   -H 'content-type: application/json' \
-  -d '{"name":"toto","description":"tata"}'
+  -d '{"name":"Anti-dilution","description":"The anti-dilution harness is to sum and relate dilution risks on different project levels (enterprise / user / project / sub-project). It is also recognizing the rules and adding them to the dilution potential"}'
 ```
 
 ##### update
