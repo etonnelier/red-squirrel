@@ -35,7 +35,14 @@ Waking up the red squirrel...
 
 ```
 
-### Troubleshooting
+## Run from source code
+
+```
+nvm use 22
+npm run dev
+```
+
+## Troubleshooting
 
 Pack, install and run without npmjs.org
 
