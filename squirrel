@@ -13,5 +13,20 @@ echo "  /    \__/    \            /"
 echo "  \____________/___________/"
 echo "    /__/  \__\\"
 
-cd "$(which squirrel | sed 's|/bin/squirrel$||')/lib/node_modules/red-squirrel"
-npm run dev
+
+SQUIRREL_HOME="$(which squirrel | sed 's|/bin/squirrel$||')/lib/node_modules/red-squirrel"
+
+if [[ "$*" == *"--watch"* ]]; then
+echo "Watching for changes..."
+  [ -d .venv ] || python3 -m venv .venv
+  source .venv/bin/activate
+  if ! python3 -c "import watchdog" 2>/dev/null; then
+    echo "Installing missing Python dependencies..."
+    pip install -r "$SQUIRREL_HOME/scripts/requirements.txt"
+  fi
+  exec python3 "$SQUIRREL_HOME/scripts/watcher.py" --install-dir "$SQUIRREL_HOME"
+else
+echo "Not watching for changes..."
+  cd "$SQUIRREL_HOME"
+  npm run dev
+fi
