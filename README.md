@@ -42,6 +42,19 @@ nvm use 22
 npm run dev
 ```
 
+## Harnesses details
+
+### Antidilution harness
+
+x = number of lines in CLAUDE.md, y = V score in %.
+
+         ⎧ 100                  if x ≤ 100
+f(x) =   ⎨ (400 − x) / 3        if 100 < x < 400
+         ⎩ 0                    if x ≥ 400
+
+def f(x: int) -> float:
+    return max(0.0, min(100.0, (400 - x) / 3))
+
 ## Troubleshooting
 
 Pack, install and run without npmjs.org
