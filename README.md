@@ -48,10 +48,9 @@ npm run dev
 
 x = number of lines in CLAUDE.md, y = V score in %.
 
-         ⎧ 100                  if x ≤ 100
-
-f(x) = ⎨ (400 − x) / 3 if 100 < x < 400
-⎩ 0 if x ≥ 400
+               ⎧ 100                  if x ≤ 100
+        f(x) = ⎨ (400 − x) / 3 if 100 < x < 400
+               ⎩ 0 if x ≥ 400
 
 def f(x: int) -> float:
 return max(0.0, min(100.0, (400 - x) / 3))
@@ -63,7 +62,7 @@ Pack, install and run without npmjs.org
 ```
 nvm use 22
 npm pack
-npm i -g red-squirrel-0.2.0.tgz
+npm i -g red-squirrel-0.2.1.tgz
 squirrel --watch
 ```
 
