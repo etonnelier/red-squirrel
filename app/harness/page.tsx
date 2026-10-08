@@ -19,7 +19,7 @@ export default async function HarnessPage({ searchParams }: Props) {
 
   return (
     <main className="relative min-h-dvh w-full">
-      <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 pt-32">
+      <div className="mx-auto flex max-w-2xl flex-col gap-6 px-4 py-10 sm:px-6 lg:max-w-5xl lg:px-8">
         <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
           {harness?.name ?? "Harness"}
         </h1>
