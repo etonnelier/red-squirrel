@@ -77,6 +77,12 @@ function totals(entry: Entry): { lines: number; total: number } {
   return { lines: entry.lines, total: entry.lines + childTotal };
 }
 
+function calculateScore(lines: number): number {
+  if (lines <= 100) return 100;
+  if (lines >= 400) return 0;
+  return (400 - lines) / 3;
+}
+
 function Row({ entry, depth }: { entry: Entry; depth: number }) {
   const t = totals(entry);
   return (
@@ -116,6 +122,12 @@ function Row({ entry, depth }: { entry: Entry; depth: number }) {
         >
           {t.total}
         </span>
+        <span
+          className="flex w-24 shrink-0 items-center justify-end rounded-md border border-slate-200 bg-white px-3 font-mono text-xs font-semibold tabular-nums text-slate-700"
+          aria-label={`score ${calculateScore(t.total).toFixed(1)}`}
+        >
+          {calculateScore(t.total).toFixed(1)}
+        </span>
       </div>
       {entry.children && (
         <ul className="mt-2 flex flex-col gap-2">
@@ -141,6 +153,9 @@ export default function GuidanceList() {
         </span>
         <span className="w-24 text-right" style={{ color: "black" }}>
           Total
+        </span>
+        <span className="w-24 text-right" style={{ color: "black" }}>
+          Score
         </span>
       </div>
       <ul className="flex flex-col gap-2">
