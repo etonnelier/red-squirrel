@@ -2,6 +2,8 @@
 
 <i>This framework is a DevX quality harness observer for claude code</i>
 
+<b>Requirements : Node.js version 22 or greater</b>
+
 ## Getting Started
 
 🐿️ - Install the app
@@ -17,7 +19,7 @@ npm i -g red-squirrel
 squirrel --watch
 ```
 
-Then the app should run on your browser at [http://localhost:4000]
+Then the app should run on your browser at [http://localhost:4115]
 
 ```
 Waking up the red squirrel...
