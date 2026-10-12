@@ -6,6 +6,17 @@
 
 set -uo pipefail
 
+if command -v node >/dev/null 2>&1; then
+  NODE_MAJOR=$(node -p 'process.versions.node.split(".")[0]')
+  if [[ "$NODE_MAJOR" -lt 22 ]]; then
+    echo "error: red-squirrel requires Node >=22, found $(node -v)" >&2
+    exit 1
+  fi
+else
+  echo "error: node not found in PATH" >&2
+  exit 1
+fi
+
 PORT="${PORT:-4115}"
 URL=""
 
