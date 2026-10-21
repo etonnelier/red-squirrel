@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { guidanceScores, harnesses } from "@/lib/db";
 import BranchesList from "./BranchesList";
 import GuidanceList from "./GuidanceList";
+import LiveRefresh from "./LiveRefresh";
 
 type Props = PageProps<"/harness">;
 
@@ -32,6 +33,7 @@ export default async function HarnessPage({ searchParams }: Props) {
         </h2>
         <BranchesList />
         <GuidanceList scores={scores} />
+        <LiveRefresh />
         <br />
       </div>
     </main>
