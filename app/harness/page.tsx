@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { harnesses } from "@/lib/db";
+import { guidanceScores, harnesses } from "@/lib/db";
 import BranchesList from "./BranchesList";
 import GuidanceList from "./GuidanceList";
 
@@ -16,6 +16,7 @@ export async function generateMetadata({
 export default async function HarnessPage({ searchParams }: Props) {
   const { name } = await searchParams;
   const harness = typeof name === "string" ? harnesses.get(name) : undefined;
+  const scores = typeof name === "string" ? guidanceScores.listFor(name) : [];
 
   return (
     <main className="relative min-h-dvh w-full">
@@ -30,7 +31,7 @@ export default async function HarnessPage({ searchParams }: Props) {
           </span>
         </h2>
         <BranchesList />
-        <GuidanceList />
+        <GuidanceList scores={scores} />
         <br />
       </div>
     </main>

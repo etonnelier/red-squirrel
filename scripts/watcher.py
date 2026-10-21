@@ -48,6 +48,9 @@ DEBOUNCE_SECONDS = 0.5
 # Default Next.js port; matches startup.sh and README.
 DEFAULT_API_BASE = "http://localhost:4115"
 
+# Line budget sent alongside each CLAUDE.md score.
+NB_LIGNES = 100
+
 
 # Files we care about for harness metric updates.
 GUIDANCE_FILE_NAMES = {"CLAUDE.md"}
@@ -72,10 +75,23 @@ def _harness_for(path: str) -> str:
     """Map a guidance file path to the harness name that should refresh."""
     p = Path(path)
     if p.name == "CLAUDE.md":
-        return "anti-dilution"
+        return "antidilution"
     if p.suffix == RULES_SUFFIX and any(part in RULES_DIR_NAMES for part in p.parts):
         return "rule-coverage"
     return "general"
+
+
+def _anti_dilution_score(x: int) -> float:
+    """Anti-dilution score V (%) for a CLAUDE.md of `x` lines.
+
+    100 up to 100 lines, linear decrease to 0 at 400 lines, 0 beyond.
+    """
+    return max(0.0, min(100.0, (400 - x) / 3))
+
+
+def _count_lines(path: str) -> int:
+    """Total number of lines in `path`, blank lines included."""
+    return len(Path(path).read_text(encoding="utf-8").splitlines())
 
 
 def _expand(path: str) -> Path:
@@ -95,6 +111,8 @@ def _collect_watch_paths(project_root: Path) -> list[str]:
     candidates.append(project_root / ".claude" / "rules")
 
     # Sub-project CLAUDE.md files anywhere in the project tree.
+    EXCLUDE_PARTS = {"node_modules", ".scripts", ".next", ".pytest_cache", ".venv", "db", "lib", "public", "scripts"}
+
     for sub in project_root.rglob("CLAUDE.md"):
         if sub != project_root / "CLAUDE.md":
             candidates.append(sub.parent)
@@ -134,15 +152,29 @@ class GuidanceEventHandler(FileSystemEventHandler):
         if not self._should_emit(path):
             return
         harness = _harness_for(path)
-        print(f"[watcher] {event}: {path} (harness: {harness})", flush=True)
-        self._post_refresh(harness, path)
+        payload: dict = {"source": path}
+        detail = ""
+        if harness == "antidilution" and Path(path).is_file():
+            # CLAUDE.md usually just imports AGENTS.md, so score both together.
+            claude_lines = _count_lines(path)
+            agents_path = Path(path).parent / "AGENTS.md"
+            agents_lines = _count_lines(str(agents_path)) if agents_path.is_file() else 0
+            lines = claude_lines + agents_lines
+            score = _anti_dilution_score(lines)
+            payload.update(lines=lines, score=score, nbLignes=NB_LIGNES)
+            detail = (
+                f", CLAUDE.md {claude_lines} lignes, AGENTS.md {agents_lines} lignes"
+                f", total {lines} lignes, V = {score:.2f}%"
+            )
+        print(f"[watcher] {event}: {path} (harness: {harness}{detail})", flush=True)
+        self._post_refresh(harness, payload)
 
-    def _post_refresh(self, harness: str, path: str) -> None:
+    def _post_refresh(self, harness: str, payload: dict) -> None:
         if requests is None:
             return
         url = f"{self._api_base}/api/harnesses/{harness}/refresh"
         try:
-            requests.post(url, json={"source": path}, timeout=2)
+            requests.post(url, json=payload, timeout=2)
         except Exception as e:
             print(f"[watcher] API refresh failed: {e}", file=sys.stderr)
 
@@ -232,6 +264,16 @@ def main(argv: list[str]) -> int:
     for p in paths:
         print(f"[watcher]   {p}")
     print(f"[watcher] API base: {api_base}")
+
+    claude_path = project_root / "CLAUDE.md"
+    if claude_path.is_file():
+        agents_path = project_root / "AGENTS.md"
+        claude_lines = _count_lines(str(claude_path))
+        agents_lines = _count_lines(str(agents_path)) if agents_path.is_file() else 0
+        lines = claude_lines + agents_lines
+        score = _anti_dilution_score(lines)
+        print(f"[watcher] CLAUDE.md {claude_lines} lignes, AGENTS.md {agents_lines} lignes"
+              f", total {lines} lignes, V = {score:.2f}%")
 
     handler = GuidanceEventHandler(api_base=api_base)
     observer = Observer()
