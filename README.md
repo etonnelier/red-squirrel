@@ -44,6 +44,13 @@ nvm use 22
 npm run dev
 ```
 
+## Unit testing
+
+```
+nvm use 22
+npm run test
+```
+
 ## Harnesses details
 
 ### Antidilution harness

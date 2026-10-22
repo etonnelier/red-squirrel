@@ -1,15 +1,13 @@
+from pathlib import Path
+import pytest
 import shutil
 import sys
-from pathlib import Path
 from types import SimpleNamespace
 
-import pytest
+from scripts.tests.watcher.constants import FIXTURES
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from watcher import GuidanceEventHandler, _anti_dilution_score, _harness_for, _is_guidance_file
-
-FIXTURES = Path(__file__).resolve().parent / "fixtures" / "md"
-
 
 def count_lines(path: Path) -> int:
     """Nombre total de lignes, lignes vides comprises."""
@@ -92,6 +90,7 @@ def referenced_files(claude_md: Path) -> list[Path]:
 
 
 def test_fixture4_referenced_files_line_count():
+    """Les fichiers `@chemin` de CLAUDE_fixture4.md totalisent 39 lignes (vides incluses)."""
     refs = referenced_files(FIXTURES / "CLAUDE_fixture4.md")
     assert [p.name for p in refs] == [
         "AGENTS_fixture1.md",

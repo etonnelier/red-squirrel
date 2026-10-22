@@ -53,7 +53,7 @@ NB_LIGNES = 100
 
 
 # Files we care about for harness metric updates.
-GUIDANCE_FILE_NAMES = {"CLAUDE.md"}
+GUIDANCE_FILE_NAME = "CLAUDE.md"
 RULES_DIR_NAMES = {"rules"}
 RULES_SUFFIX = ".md"
 
@@ -64,7 +64,7 @@ SUBPROCESS_STARTUP_GRACE = 30
 def _is_guidance_file(path: str) -> bool:
     """True if `path` is a guidance file the harness cares about."""
     p = Path(path)
-    if p.name in GUIDANCE_FILE_NAMES:
+    if p.name == GUIDANCE_FILE_NAME:
         return True
     if p.suffix == RULES_SUFFIX and any(part in RULES_DIR_NAMES for part in p.parts):
         return True
@@ -74,7 +74,7 @@ def _is_guidance_file(path: str) -> bool:
 def _harness_for(path: str) -> str:
     """Map a guidance file path to the harness name that should refresh."""
     p = Path(path)
-    if p.name == "CLAUDE.md":
+    if p.name == GUIDANCE_FILE_NAME:
         return "antidilution"
     if p.suffix == RULES_SUFFIX and any(part in RULES_DIR_NAMES for part in p.parts):
         return "rule-coverage"
@@ -149,9 +149,15 @@ class GuidanceEventHandler(FileSystemEventHandler):
     def _notify(self, event: str, path: str) -> None:
         if not _is_guidance_file(path):
             return
+        harness = _harness_for(path)
+        if event == "deleted":
+            # Not debounced: a delete followed quickly by a create (atomic save)
+            # must still remove the row, and the create must not be dropped.
+            print(f"[watcher] {event}: {path} (harness: {harness})", flush=True)
+            self._post_refresh(harness, {"source": path, "deleted": True})
+            return
         if not self._should_emit(path):
             return
-        harness = _harness_for(path)
         payload: dict = {"source": path}
         detail = ""
         if harness == "antidilution" and Path(path).is_file():

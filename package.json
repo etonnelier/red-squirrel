@@ -5,7 +5,8 @@
     "node": ">=22"
   },
   "scripts": {
-    "dev": "bash startup.sh"
+    "dev": "bash startup.sh",
+    "test": ".venv/bin/python -m pytest scripts/tests/test_watcher.py -s"
   },
   "bin": {
     "squirrel": "./squirrel"

@@ -42,3 +42,6 @@ next-env.d.ts
 
 # npm packs
 red-squirrel-*.tgz
+
+# python
+__pycache__/
